@@ -1,4 +1,5 @@
 defopt
+wrapt
 black
 flake8
 ipython
