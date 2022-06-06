@@ -14,4 +14,10 @@ Then run the script:
 
 ```
 python3 defopt_test.py -h
+python3 defopt_test.py -p '{"a": 3, "b": [1, 2, 3]}'
+python3 defopt_test.py -c config.json
 ```
+
+TODO
+- propagate `-h/--help`
+- make sure it works with sub-commands

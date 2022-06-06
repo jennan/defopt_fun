@@ -3,3 +3,4 @@ wrapt
 black
 flake8
 ipython
+pdbpp
