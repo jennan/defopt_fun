@@ -20,3 +20,4 @@ python3 defopt_test.py -c config.json -m 10
 
 TODO
 - make sure it works with sub-commands
+- allow multiple configuration files
