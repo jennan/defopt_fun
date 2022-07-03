@@ -12,22 +12,22 @@ import defopt
 def parse_args(wrapped, instance, args, kwargs):
     parser = argparse.ArgumentParser(add_help=False)
     parser.add_argument(
-        "-c", "--conf", type=argparse.FileType("r"), help="Configuration file"
+        "-c", "--config", type=argparse.FileType("r"), help="Configuration file"
     )
     args, remaining = parser.parse_known_args()
 
-    if args.conf:
+    if args.config:
         try:
-            defaults = json.load(args.conf)
+            defaults = json.load(args.config)
         except ValueError:
             print("Error: Could not parse config file", file=sys.stderr)
             sys.exit(1)
         finally:
-            args.conf.close()
+            args.config.close()
         instance.set_defaults(**defaults)
 
     instance.add_argument(
-        "-c", "--conf", type=argparse.FileType("r"), help="Configuration file"
+        "-c", "--config", type=argparse.FileType("r"), help="Configuration file"
     )
     return wrapped(remaining)
 
@@ -36,11 +36,10 @@ def main(
     *,
     verbose: bool = False,
     maxiter: int = 100,
-    params: T.Optional[T.Dict[str, T.Any]] = None
+    params: T.Optional[T.Dict[str, T.Any]] = None,
 ):
-    print("verbose:", verbose)
-    print("maxiter:", maxiter)
-    print("params:", params, type(params))
+    for varname, value in locals().items():
+        print(f"{varname}: {value} ({type(value)})")
 
 
 if __name__ == "__main__":
