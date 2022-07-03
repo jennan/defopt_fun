@@ -18,6 +18,15 @@ python3 defopt_test.py -p '{"a": 3, "b": [1, 2, 3]}'
 python3 defopt_test.py -c config.json -m 10
 ```
 
+or test the version with multiple commands
+
+```
+python3 defopt_test2.py -h
+python3 defopt_test2.py main -h
+python3 defopt_test2.py main -p '{"a": 3, "b": [1, 2, 3]}'
+python3 defopt_test2.py main -c config.json -m 10
+python3 defopt_test2.py -c config.json main -m 10
+```
+
 TODO
-- make sure it works with sub-commands
 - allow multiple configuration files
