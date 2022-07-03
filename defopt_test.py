@@ -3,18 +3,19 @@ import typing as T
 import json
 import argparse
 
-import wrapt
 import defopt
 
 
+parse_known_args_orig = argparse.ArgumentParser.parse_known_args
+
+
 # adapted from https://gist.github.com/kgaughan/b659d6c173b5a2203dfb3ae225135cce
-@wrapt.patch_function_wrapper(argparse.ArgumentParser, "parse_args")
-def parse_args(wrapped, instance, args, kwargs):
+def parse_known_args(self, args=None, namespace=None):
     parser = argparse.ArgumentParser(add_help=False)
     parser.add_argument(
         "-c", "--config", type=argparse.FileType("r"), help="Configuration file"
     )
-    args, remaining = parser.parse_known_args()
+    args, remaining = parse_known_args_orig(parser, args)
 
     if args.config:
         try:
@@ -24,12 +25,21 @@ def parse_args(wrapped, instance, args, kwargs):
             sys.exit(1)
         finally:
             args.config.close()
-        instance.set_defaults(**defaults)
+        self.set_defaults(**defaults)
 
-    instance.add_argument(
+        for action in self._actions:
+            if not isinstance(action, argparse._SubParsersAction):
+                continue
+            for subparser in action.choices.values():
+                subparser.set_defaults(**defaults)
+
+    self.add_argument(
         "-c", "--config", type=argparse.FileType("r"), help="Configuration file"
     )
-    return wrapped(remaining)
+    return parse_known_args_orig(self, remaining)
+
+
+argparse.ArgumentParser.parse_known_args = parse_known_args
 
 
 def main(

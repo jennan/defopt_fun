@@ -1,5 +1,6 @@
 {
     "verbose": true,
+    "maxiter": 50,
     "params": {
         "c": 3,
         "d": [
